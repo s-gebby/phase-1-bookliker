@@ -18,6 +18,10 @@ function fetchBooks() {
 
 function showBookDetails(book) {
   const showPanel = document.getElementById("show-panel");
+  const currentUser = { id: 1, username: "pouros" };
+  const userHasLiked = book.users.some((user) => user.id === currentUser.id);
+  const likeButtonText = userHasLiked ? "UNLIKE" : "LIKE";
+
   showPanel.innerHTML = `
     <h2>${book.title}</h2>
     <img src="${book.img_url}" alt="${book.title}">
@@ -25,7 +29,7 @@ function showBookDetails(book) {
     <ul id="user-list">
       ${book.users.map((user) => `<li>${user.username}</li>`).join("")}
     </ul>
-    <button id="like-button">LIKE</button>
+    <button id="like-button">${likeButtonText}</button>
   `;
   document
     .getElementById("like-button")
@@ -33,8 +37,7 @@ function showBookDetails(book) {
 }
 
 function likeBook(book) {
-  const currentUser = { id: 1, username: "pouros" };
-  const userList = document.getElementById("user-list");
+  const currentUser = { id: 1, username: "pouros" }; // Replace with the actual current user
   const userIndex = book.users.findIndex((user) => user.id === currentUser.id);
 
   if (userIndex >= 0) {
@@ -52,8 +55,16 @@ function likeBook(book) {
   })
     .then((response) => response.json())
     .then((updatedBook) => {
+      const userList = document.getElementById("user-list");
       userList.innerHTML = updatedBook.users
         .map((user) => `<li>${user.username}</li>`)
         .join("");
+
+      const likeButton = document.getElementById("like-button");
+      likeButton.textContent = updatedBook.users.some(
+        (user) => user.id === currentUser.id
+      )
+        ? "UNLIKE"
+        : "LIKE";
     });
 }
