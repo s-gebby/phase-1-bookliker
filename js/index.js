@@ -37,7 +37,7 @@ function showBookDetails(book) {
 }
 
 function likeBook(book) {
-  const currentUser = { id: 1, username: "pouros" }; // Replace with the actual current user
+  const currentUser = { id: 1, username: "pouros" };
   const userIndex = book.users.findIndex((user) => user.id === currentUser.id);
 
   if (userIndex >= 0) {
